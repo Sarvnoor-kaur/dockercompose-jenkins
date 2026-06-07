@@ -112,7 +112,7 @@ pipeline {
 
             steps {
 
-                bat 'docker compose up --build -d'
+                sh 'docker compose up --build -d'
 
             }
         }
@@ -129,7 +129,7 @@ pipeline {
                     )
                 ]) {
 
-                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    sh 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                 }
             }
         }
@@ -138,7 +138,7 @@ pipeline {
 
             steps {
 
-                bat 'docker push sarvnoorkaur/backend-app:latest'
+                sh 'docker push sarvnoorkaur/backend-app:latest'
 
             }
         }
@@ -147,7 +147,7 @@ pipeline {
 
             steps {
 
-                bat 'docker push sarvnoorkaur/frontend-app:latest'
+                sh 'docker push sarvnoorkaur/frontend-app:latest'
 
             }
         }
