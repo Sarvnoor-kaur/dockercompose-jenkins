@@ -25,7 +25,7 @@ pipeline {
 
             steps {
 
-                bat 'docker build -t %BACKEND_IMAGE%:latest backend'
+                sh 'docker build -t %BACKEND_IMAGE%:latest backend'
 
             }
         }
@@ -34,7 +34,7 @@ pipeline {
 
             steps {
 
-                bat 'docker build -t %FRONTEND_IMAGE%:latest frontend'
+                sh 'docker build -t %FRONTEND_IMAGE%:latest frontend'
 
             }
         }
@@ -51,7 +51,7 @@ pipeline {
                     )
                 ]) {
 
-                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    sh 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                 }
             }
         }
@@ -60,7 +60,7 @@ pipeline {
 
             steps {
 
-                bat 'docker push %BACKEND_IMAGE%:latest'
+                sh 'docker push %BACKEND_IMAGE%:latest'
 
             }
         }
@@ -69,7 +69,7 @@ pipeline {
 
             steps {
 
-                bat 'docker push %FRONTEND_IMAGE%:latest'
+                sh 'docker push %FRONTEND_IMAGE%:latest'
 
             }
         }
