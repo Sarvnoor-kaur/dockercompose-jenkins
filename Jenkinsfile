@@ -103,7 +103,7 @@ pipeline {
             steps {
 
                 git branch: 'main',
-                url: 'YOUR_GITHUB_REPO_URL'
+                url: 'https://github.com/Sarvnoor-kaur/dockercompose-jenkins.git'
 
             }
         }
