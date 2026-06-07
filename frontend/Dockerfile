@@ -1,15 +1,11 @@
-# Use slim base image
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 
-# Copy dependency files first (for caching)
 COPY package*.json ./
 
-# Install production dependencies only
-RUN npm ci --only=production
+RUN npm install
 
-# Copy application code
 COPY . .
 
 EXPOSE 3000

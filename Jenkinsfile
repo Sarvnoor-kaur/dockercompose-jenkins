@@ -16,19 +16,15 @@ pipeline {
             }
         }
 
-        stage('Build Images in Parallel') {
-            parallel {
-                stage('Build Backend Image') {
-                    steps {
-                        sh 'docker build --cache-from $BACKEND_IMAGE:latest -t $BACKEND_IMAGE:latest ./backend'
-                    }
-                }
+        stage('Build Backend Image') {
+            steps {
+                sh 'docker build -t $BACKEND_IMAGE:latest ./backend'
+            }
+        }
 
-                stage('Build Frontend Image') {
-                    steps {
-                        sh 'docker build --cache-from $FRONTEND_IMAGE:latest -t $FRONTEND_IMAGE:latest ./frontend'
-                    }
-                }
+        stage('Build Frontend Image') {
+            steps {
+                sh 'docker build -t $FRONTEND_IMAGE:latest ./frontend'
             }
         }
 
@@ -50,19 +46,15 @@ pipeline {
             }
         }
 
-        stage('Push Images in Parallel') {
-            parallel {
-                stage('Push Backend') {
-                    steps {
-                        sh 'docker push $BACKEND_IMAGE:latest'
-                    }
-                }
+        stage('Push Backend') {
+            steps {
+                sh 'docker push $BACKEND_IMAGE:latest'
+            }
+        }
 
-                stage('Push Frontend') {
-                    steps {
-                        sh 'docker push $FRONTEND_IMAGE:latest'
-                    }
-                }
+        stage('Push Frontend') {
+            steps {
+                sh 'docker push $FRONTEND_IMAGE:latest'
             }
         }
     }
