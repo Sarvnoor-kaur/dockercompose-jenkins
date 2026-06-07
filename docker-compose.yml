@@ -1,54 +1,54 @@
-# version: "3.8"
-
-# services:
-
-#   backend:
-#     image: sarvnoorkaur/backend-app:latest
-#     container_name: backend
-
-#     ports:
-#       - "5000:5000"
-
-#   frontend:
-#     image: sarvnoorkaur/frontend-app:latest
-#     container_name: frontend
-
-#     ports:
-#       - "3000:3000"
-
-#     depends_on:
-
-#       - backend
-
-
-
-
-
 version: "3.8"
 
 services:
 
   backend:
-    build:
-      context: ./backend
-
     image: sarvnoorkaur/backend-app:latest
-
     container_name: backend
 
     ports:
       - "5000:5000"
 
   frontend:
-    build:
-      context: ./frontend
-
     image: sarvnoorkaur/frontend-app:latest
-
     container_name: frontend
 
     ports:
       - "3000:3000"
 
     depends_on:
+
       - backend
+
+
+
+
+
+# version: "3.8"
+
+# services:
+
+#   backend:
+#     build:
+#       context: ./backend
+
+#     image: sarvnoorkaur/backend-app:latest
+
+#     container_name: backend
+
+#     ports:
+#       - "5000:5000"
+
+#   frontend:
+#     build:
+#       context: ./frontend
+
+#     image: sarvnoorkaur/frontend-app:latest
+
+#     container_name: frontend
+
+#     ports:
+#       - "3000:3000"
+
+#     depends_on:
+#       - backend

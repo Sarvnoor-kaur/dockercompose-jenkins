@@ -1,100 +1,13 @@
-// pipeline {
-
-//     agent any
-
-//     environment {
-
-//         FRONTEND_IMAGE = "sarvnoorkaur/frontend-app"
-//         BACKEND_IMAGE  = "sarvnoorkaur/backend-app"
-
-//     }
-
-//     stages {
-
-//         stage('Checkout') {
-
-//             steps {
-
-//                 git branch: 'main',
-//                 url: 'YOUR_GITHUB_REPO_URL'
-
-//             }
-//         }
-
-//         stage('Build Backend Image') {
-
-//             steps {
-
-//                 bat 'docker build -t %BACKEND_IMAGE%:latest backend'
-
-//             }
-//         }
-
-//         stage('Build Frontend Image') {
-
-//             steps {
-
-//                 bat 'docker build -t %FRONTEND_IMAGE%:latest frontend'
-
-//             }
-//         }
-
-//         stage('Docker Login') {
-
-//             steps {
-
-//                 withCredentials([
-//                     usernamePassword(
-//                         credentialsId: 'dockerhub',
-//                         usernameVariable: 'DOCKER_USER',
-//                         passwordVariable: 'DOCKER_PASS'
-//                     )
-//                 ]) {
-
-//                     bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
-//                 }
-//             }
-//         }
-
-//         stage('Push Backend') {
-
-//             steps {
-
-//                 bat 'docker push %BACKEND_IMAGE%:latest'
-
-//             }
-//         }
-
-//         stage('Push Frontend') {
-
-//             steps {
-
-//                 bat 'docker push %FRONTEND_IMAGE%:latest'
-
-//             }
-//         }
-
-//     }
-
-//     post {
-
-//         success {
-
-//             echo 'Images pushed to Docker Hub successfully'
-
-//         }
-//     }
-// }
-
-
-
-
-
-
-
 pipeline {
 
     agent any
+
+    environment {
+
+        FRONTEND_IMAGE = "sarvnoorkaur/frontend-app"
+        BACKEND_IMAGE  = "sarvnoorkaur/backend-app"
+
+    }
 
     stages {
 
@@ -103,16 +16,25 @@ pipeline {
             steps {
 
                 git branch: 'main',
-                url: 'https://github.com/Sarvnoor-kaur/dockercompose-jenkins.git'
+                url: 'YOUR_GITHUB_REPO_URL'
 
             }
         }
 
-        stage('Compose Build & Run') {
+        stage('Build Backend Image') {
 
             steps {
 
-                sh 'docker compose up --build -d'
+                bat 'docker build -t %BACKEND_IMAGE%:latest backend'
+
+            }
+        }
+
+        stage('Build Frontend Image') {
+
+            steps {
+
+                bat 'docker build -t %FRONTEND_IMAGE%:latest frontend'
 
             }
         }
@@ -129,7 +51,7 @@ pipeline {
                     )
                 ]) {
 
-                    sh 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                 }
             }
         }
@@ -138,7 +60,7 @@ pipeline {
 
             steps {
 
-                sh 'docker push sarvnoorkaur/backend-app:latest'
+                bat 'docker push %BACKEND_IMAGE%:latest'
 
             }
         }
@@ -147,7 +69,7 @@ pipeline {
 
             steps {
 
-                sh 'docker push sarvnoorkaur/frontend-app:latest'
+                bat 'docker push %FRONTEND_IMAGE%:latest'
 
             }
         }
@@ -158,10 +80,88 @@ pipeline {
 
         success {
 
-            echo 'Build, Run and Push Successful'
+            echo 'Images pushed to Docker Hub successfully'
 
         }
-
     }
-
 }
+
+
+
+
+
+
+
+// pipeline {
+
+//     agent any
+
+//     stages {
+
+//         stage('Checkout') {
+
+//             steps {
+
+//                 git branch: 'main',
+//                 url: 'https://github.com/Sarvnoor-kaur/dockercompose-jenkins.git'
+
+//             }
+//         }
+
+//         stage('Compose Build & Run') {
+
+//             steps {
+
+//                 sh 'docker compose up --build -d'
+
+//             }
+//         }
+
+//         stage('Docker Login') {
+
+//             steps {
+
+//                 withCredentials([
+//                     usernamePassword(
+//                         credentialsId: 'dockerhub',
+//                         usernameVariable: 'DOCKER_USER',
+//                         passwordVariable: 'DOCKER_PASS'
+//                     )
+//                 ]) {
+
+//                     sh 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+//                 }
+//             }
+//         }
+
+//         stage('Push Backend') {
+
+//             steps {
+
+//                 sh 'docker push sarvnoorkaur/backend-app:latest'
+
+//             }
+//         }
+
+//         stage('Push Frontend') {
+
+//             steps {
+
+//                 sh 'docker push sarvnoorkaur/frontend-app:latest'
+
+//             }
+//         }
+
+//     }
+
+//     post {
+
+//         success {
+
+//             echo 'Build, Run and Push Successful'
+
+//         }
+
+//     }
+
+// }
