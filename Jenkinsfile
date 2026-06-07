@@ -3,46 +3,33 @@ pipeline {
     agent any
 
     environment {
-
         FRONTEND_IMAGE = "sarvnoorkaur/frontend-app"
         BACKEND_IMAGE  = "sarvnoorkaur/backend-app"
-
     }
 
     stages {
 
         stage('Checkout') {
-
             steps {
-
                 git branch: 'main',
-                url: 'https://github.com/Sarvnoor-kaur/dockercompose-jenkins.git'
-
+                    url: 'https://github.com/Sarvnoor-kaur/dockercompose-jenkins.git'
             }
         }
 
         stage('Build Backend Image') {
-
             steps {
-
-                sh 'docker build -t %BACKEND_IMAGE%:latest backend'
-
+                sh 'docker build -t $BACKEND_IMAGE:latest ./backend'
             }
         }
 
         stage('Build Frontend Image') {
-
             steps {
-
-                sh 'docker build -t %FRONTEND_IMAGE%:latest frontend'
-
+                sh 'docker build -t $FRONTEND_IMAGE:latest ./frontend'
             }
         }
 
         stage('Docker Login') {
-
             steps {
-
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'dockerhub',
@@ -50,38 +37,35 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-
-                    sh 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login \
+                    -u "$DOCKER_USER" \
+                    --password-stdin
+                    '''
                 }
             }
         }
 
         stage('Push Backend') {
-
             steps {
-
-                sh 'docker push %BACKEND_IMAGE%:latest'
-
+                sh 'docker push $BACKEND_IMAGE:latest'
             }
         }
 
         stage('Push Frontend') {
-
             steps {
-
-                sh 'docker push %FRONTEND_IMAGE%:latest'
-
+                sh 'docker push $FRONTEND_IMAGE:latest'
             }
         }
-
     }
 
     post {
-
         success {
-
             echo 'Images pushed to Docker Hub successfully'
+        }
 
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
