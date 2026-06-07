@@ -18,13 +18,13 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
-                bat 'docker build -t $BACKEND_IMAGE:latest ./backend'
+                bat 'docker build -t %BACKEND_IMAGE%:latest backend'
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                bat 'docker build -t $FRONTEND_IMAGE:latest ./frontend'
+                bat 'docker build -t %FRONTEND_IMAGE%:latest frontend'
             }
         }
 
@@ -37,24 +37,20 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    bat '''
-                    echo "$DOCKER_PASS" | docker login \
-                    -u "$DOCKER_USER" \
-                    --password-stdin
-                    '''
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                 }
             }
         }
 
         stage('Push Backend') {
             steps {
-                bat 'docker push $BACKEND_IMAGE:latest'
+                bat 'docker push %BACKEND_IMAGE%:latest'
             }
         }
 
         stage('Push Frontend') {
             steps {
-                bat 'docker push $FRONTEND_IMAGE:latest'
+                bat 'docker push %FRONTEND_IMAGE%:latest'
             }
         }
     }
